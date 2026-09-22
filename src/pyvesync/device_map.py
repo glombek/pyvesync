@@ -1222,7 +1222,7 @@ air_fryer_modules: list[AirFryerMap] = [
             AirFryerCookModes.WARM: 'Warm',
         },
         default_cook_mode=AirFryerCookModes.CUSTOM,
-        default_preset=AirFryerPresets.li401s_custom,
+        default_preset=AirFryerPresets.custom,
         time_units=TimeUnits.SECONDS,
         # Sensible rounded bounds rather than exact conversions of each other.
         # temp_unit below is only the pre-poll default: the unit reported by
