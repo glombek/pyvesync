@@ -1183,6 +1183,51 @@ air_fryer_modules: list[AirFryerMap] = [
         ),
     ),
     AirFryerMap(
+        # Cosori Lite 3.8L (CAF-LI401S), EU single-basket model. Uses the same
+        # bypassV2 protocol as TurboBlaze (startCook / endCook /
+        # getAirfryerStatus) and reports both cook and sensor temperatures in
+        # Celsius. Cooking must be started from the unit's physical control;
+        # the cloud API only stages, adjusts and ends a program.
+        class_name='VeSyncTurboBlazeFryer',
+        module=vesynckitchen,
+        dev_types=['CAF-LI401S'],
+        setup_entry='CAF-LI401S',
+        device_alias='Lite Air Fryer',
+        model_display='CAF-LI401S Series',
+        model_name='Lite 3.8L Smart Air Fryer',
+        temp_unit=TemperatureUnits.CELSIUS,
+        features=[AirFryerFeatures.RESUMABLE],
+        cook_modes={
+            AirFryerCookModes.AIRFRY: 'AirFry',
+            AirFryerCookModes.BAKE: 'Bake',
+            AirFryerCookModes.CHICKEN: 'Chicken',
+            AirFryerCookModes.FRENCH_FRIES: 'FrenchFries',
+            AirFryerCookModes.FROZEN: 'Frozen',
+            AirFryerCookModes.REHEAT: 'Reheat',
+            AirFryerCookModes.ROAST: 'Roast',
+            AirFryerCookModes.SEAFOOD: 'Seafood',
+            AirFryerCookModes.STEAK: 'Steak',
+            AirFryerCookModes.VEGGIES: 'Veggies',
+        },
+        default_cook_mode=AirFryerCookModes.AIRFRY,
+        default_preset=AirFryerPresets.air_fry,
+        time_units=TimeUnits.SECONDS,
+        temperature_range_c=(75, 230),
+        temperature_range_f=(170, 450),
+        status_map=MappingProxyType(
+            {
+                'standby': AirFryerCookStatus.STANDBY,
+                'ready': AirFryerCookStatus.COOK_STOP,
+                'cooking': AirFryerCookStatus.COOKING,
+                'heating': AirFryerCookStatus.HEATING,
+                'preheating': AirFryerCookStatus.HEATING,
+                'cookStop': AirFryerCookStatus.COOK_STOP,
+                'pullOut': AirFryerCookStatus.PULL_OUT,
+                'cookEnd': AirFryerCookStatus.COOK_END,
+            }
+        ),
+    ),
+    AirFryerMap(
         # Cosori Dual Blaze US variant (single-chamber model with dual heating
         # elements). Uses the same bypassV2 protocol as TurboBlaze (startCook /
         # endCook / getAirfryerStatus). The Dual Blaze has no preheat function.
