@@ -1189,9 +1189,9 @@ air_fryer_modules: list[AirFryerMap] = [
         # the unit's physical control; the cloud API only stages, adjusts and
         # ends a program.
         #
-        # Mode strings, default temperatures and times below were read from a
-        # physical unit by staging each preset button and reading stepArray.
-        # Every program reports recipe ID 1.
+        # Mode strings below were read from a physical unit by staging each
+        # preset button and reading stepArray. Every program reports recipe
+        # ID 1.
         #
         # Note this unit reports the fries preset as 'Fries' where the Dual
         # Blaze entries use 'FrenchFries'. Whether that split is per model or
@@ -1212,11 +1212,10 @@ air_fryer_modules: list[AirFryerMap] = [
         # standby, so preheat is not surfaced yet and PREHEAT is not claimed
         # here. See the PR discussion.
         features=[AirFryerFeatures.RESUMABLE],
-        # The seven programs the unit exposes, with the observed defaults:
-        #   Custom  175 C / 15 min      Chicken 210 C / 13 min
-        #   Fries   200 C / 17 min      Bacon   160 C / 12 min
-        #   Steak   160 C / 15 min      Veggies 200 C /  8 min
-        #   Warm     75 C /  5 min
+        # The seven programs the unit exposes. Only the mode strings are
+        # recorded: the temperature, time and shake time attached to each
+        # preset are user-editable in the VeSync app, so the values read back
+        # from any one device are that owner's settings, not device defaults.
         cook_modes={
             AirFryerCookModes.CUSTOM: 'Custom',
             AirFryerCookModes.CHICKEN: 'Chicken',

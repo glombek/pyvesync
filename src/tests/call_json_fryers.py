@@ -80,17 +80,18 @@ DC601_RECIPE = AirFryerPresetRecipe(
     preheat_time=AirFryerDefaults.preheat_time_s,
 )
 
-# Values read from a physical CAF-LI401S. The unit is Celsius-only, names the
-# preset 'Fries' rather than 'FrenchFries', and reports recipe ID 1 for every
-# program.
+# The CAF-LI401S names the preset 'Fries' rather than 'FrenchFries' and reports
+# recipe ID 1 for every program. Temperature and time use the shared test
+# defaults: the per-preset values on a real unit are user-editable in the app,
+# so they are not device characteristics worth pinning here.
 LI401S_RECIPE = AirFryerPresetRecipe(
     recipe_name="",
     cook_mode="Fries",
     recipe_id=1,
     recipe_type=3,
-    target_temp=200,
-    temp_unit=TemperatureUnits.CELSIUS,
-    cook_time=1020,
+    target_temp=AirFryerDefaults.cook_temp_f,
+    temp_unit=AirFryerDefaults.temp_unit,
+    cook_time=AirFryerDefaults.cook_time_s,
 )
 
 TF101S_RECIPE = AirFryerPresetRecipe(
