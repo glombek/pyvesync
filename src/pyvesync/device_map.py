@@ -1185,9 +1185,14 @@ air_fryer_modules: list[AirFryerMap] = [
     AirFryerMap(
         # Cosori Lite 3.8L (CAF-LI401S), EU single-basket model. Uses the same
         # bypassV2 protocol as TurboBlaze (startCook / endCook /
-        # getAirfryerStatus) and reports both cook and sensor temperatures in
-        # Celsius. Cooking must be started from the unit's physical control;
-        # the cloud API only stages, adjusts and ends a program.
+        # getAirfryerStatus) and is Celsius-only. Cooking must be started from
+        # the unit's physical control; the cloud API only stages, adjusts and
+        # ends a program.
+        #
+        # Mode strings, default temperatures and times below were read from a
+        # physical unit by staging each preset button and reading stepArray.
+        # Note the preset button is reported as 'Fries', not the 'FrenchFries'
+        # string the Dual Blaze uses, and every program reports recipe ID 1.
         class_name='VeSyncTurboBlazeFryer',
         module=vesynckitchen,
         dev_types=['CAF-LI401S'],
@@ -1196,34 +1201,42 @@ air_fryer_modules: list[AirFryerMap] = [
         model_display='CAF-LI401S Series',
         model_name='Lite 3.8L Smart Air Fryer',
         temp_unit=TemperatureUnits.CELSIUS,
+        # The unit has a preheat program, but it reports preheat with an empty
+        # stepArray (cookStatus 'heating', preheatSetTime/preheatTemp set).
+        # VeSyncTurboBlazeFryer.get_details() treats an empty stepArray as
+        # standby, so preheat is not surfaced yet and PREHEAT is not claimed
+        # here. See the PR discussion.
         features=[AirFryerFeatures.RESUMABLE],
+        # The seven programs the unit exposes, with the observed defaults:
+        #   Custom  175 C / 15 min      Chicken 210 C / 13 min
+        #   Fries   200 C / 17 min      Bacon   160 C / 12 min
+        #   Steak   160 C / 15 min      Veggies 200 C /  8 min
+        #   Warm     75 C /  5 min
         cook_modes={
-            AirFryerCookModes.AIRFRY: 'AirFry',
-            AirFryerCookModes.BAKE: 'Bake',
+            AirFryerCookModes.CUSTOM: 'Custom',
             AirFryerCookModes.CHICKEN: 'Chicken',
-            AirFryerCookModes.FRENCH_FRIES: 'FrenchFries',
-            AirFryerCookModes.FROZEN: 'Frozen',
-            AirFryerCookModes.REHEAT: 'Reheat',
-            AirFryerCookModes.ROAST: 'Roast',
-            AirFryerCookModes.SEAFOOD: 'Seafood',
+            AirFryerCookModes.FRENCH_FRIES: 'Fries',
+            AirFryerCookModes.BACON: 'Bacon',
             AirFryerCookModes.STEAK: 'Steak',
             AirFryerCookModes.VEGGIES: 'Veggies',
+            AirFryerCookModes.WARM: 'Warm',
         },
-        default_cook_mode=AirFryerCookModes.AIRFRY,
-        default_preset=AirFryerPresets.air_fry,
+        default_cook_mode=AirFryerCookModes.CUSTOM,
+        default_preset=AirFryerPresets.li401s_custom,
         time_units=TimeUnits.SECONDS,
         temperature_range_c=(75, 230),
         temperature_range_f=(170, 450),
+        # 'standby', 'cooking' and 'heating' are confirmed from the device.
+        # The remainder are carried over from the other bypassV2 fryers and are
+        # not yet observed on this model.
         status_map=MappingProxyType(
             {
                 'standby': AirFryerCookStatus.STANDBY,
-                'ready': AirFryerCookStatus.COOK_STOP,
                 'cooking': AirFryerCookStatus.COOKING,
                 'heating': AirFryerCookStatus.HEATING,
-                'preheating': AirFryerCookStatus.HEATING,
                 'cookStop': AirFryerCookStatus.COOK_STOP,
-                'pullOut': AirFryerCookStatus.PULL_OUT,
                 'cookEnd': AirFryerCookStatus.COOK_END,
+                'pullOut': AirFryerCookStatus.PULL_OUT,
             }
         ),
     ),

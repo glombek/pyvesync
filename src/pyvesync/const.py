@@ -815,6 +815,18 @@ class AirFryerPresets:
         temp_unit='f',
         cook_time=10 * 60,
     )
+    # Cosori Lite 3.8L (CAF-LI401S) manual program. The unit is Celsius-only
+    # and reports recipe ID 1 for every program, preset or manual. Defaults
+    # observed from the device when no preset is selected.
+    li401s_custom: AirFryerPresetRecipe = AirFryerPresetRecipe(
+        cook_mode='Custom',
+        recipe_name='Manual Cook',
+        recipe_id=1,
+        recipe_type=3,
+        target_temp=175,
+        temp_unit='c',
+        cook_time=15 * 60,
+    )
     air_fry: AirFryerPresetRecipe = AirFryerPresetRecipe(
         cook_mode='AirFry',
         recipe_name='AirFry',
@@ -970,6 +982,7 @@ class AirFryerCookModes(StrEnum):
     VEGGIES = 'veggies'
     FRENCH_FRIES = 'french_fries'
     CHICKEN = 'chicken'
+    BACON = 'bacon'
 
 
 class AirFryerFeatures(Features):
