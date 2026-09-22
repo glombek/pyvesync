@@ -1191,8 +1191,13 @@ air_fryer_modules: list[AirFryerMap] = [
         #
         # Mode strings, default temperatures and times below were read from a
         # physical unit by staging each preset button and reading stepArray.
-        # Note the preset button is reported as 'Fries', not the 'FrenchFries'
-        # string the Dual Blaze uses, and every program reports recipe ID 1.
+        # Every program reports recipe ID 1.
+        #
+        # Note this unit reports the fries preset as 'Fries' where the Dual
+        # Blaze entries use 'FrenchFries'. Whether that split is per model or
+        # regional is unresolved: the device read here is an EU unit, and the
+        # EU Dual Blaze entry appears derived from the US one rather than
+        # independently confirmed. A US CAF-LI401S would settle it.
         class_name='VeSyncTurboBlazeFryer',
         module=vesynckitchen,
         dev_types=['CAF-LI401S'],
