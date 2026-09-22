@@ -1224,6 +1224,10 @@ air_fryer_modules: list[AirFryerMap] = [
         default_cook_mode=AirFryerCookModes.CUSTOM,
         default_preset=AirFryerPresets.li401s_custom,
         time_units=TimeUnits.SECONDS,
+        # Sensible rounded bounds rather than exact conversions of each other.
+        # temp_unit below is only the pre-poll default: the unit reported by
+        # the device appears to follow account region, so a US unit of this
+        # model may well report 'f'.
         temperature_range_c=(75, 230),
         temperature_range_f=(170, 450),
         # 'standby', 'cooking' and 'heating' are confirmed from the device.
